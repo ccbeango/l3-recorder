@@ -20,8 +20,11 @@ const corners = ['br', 'bl', 'tl', 'tr'];
 </script>
 
 <template>
-  <div class="fixed inset-0 overflow-hidden">
-    <div ref="elRef" class="h-full w-full border border-blue-300">
+  <div class="backgr fixed inset-0 overflow-hidden">
+    <div
+      ref="elRef"
+      class="h-[calc(100%-1px)] w-[calc(100%-1px)] border border-blue-300"
+    >
       <div
         v-for="co in corners"
         :key="co"

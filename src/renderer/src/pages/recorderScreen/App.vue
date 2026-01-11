@@ -172,7 +172,7 @@ function toggleMic() {
   <div class="fixed inset-0 overflow-hidden">
     <Header from="recorderScreen"></Header>
     <div class="h-full w-full">
-      <div class="content p-4">
+      <div class="flex p-4">
         <div class="ml-6 flex items-center space-x-2">
           <DiscIcon
             :class="{ 'animate-record-flash': isRecording && !isPaused }"
