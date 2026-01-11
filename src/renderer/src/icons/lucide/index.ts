@@ -1,0 +1,18 @@
+export {
+  MicIcon,
+  MicOffIcon,
+  VideoIcon,
+  VideoOffIcon,
+  DiscIcon,
+  LoaderCircle,
+  PlayIcon,
+  SquareIcon,
+  SquarePauseIcon,
+  XIcon,
+  CheckIcon,
+  RefreshCcwIcon,
+  MoveIcon,
+  SettingsIcon,
+  MinusIcon,
+  CopyIcon,
+} from 'lucide-vue-next';

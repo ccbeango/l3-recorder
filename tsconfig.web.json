@@ -1,0 +1,39 @@
+{
+  "extends": "@electron-toolkit/tsconfig/tsconfig.web.json",
+  "include": [
+    "src/renderer/src/env.d.ts",
+    "src/renderer/src/**/*",
+    "src/renderer/src/**/*.vue",
+    "src/preload/*.d.ts",
+    "src/types/**/*.ts",
+    "src/types/**/*.d.ts"
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ],
+      "@types": [
+        "src/types/index.ts"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@renderer/*": [
+        "src/renderer/src/*"
+      ],
+      "@shadcn": [
+        "src/renderer/src/shadcn/index.ts"
+      ],
+      "@shadcn/*": [
+        "src/renderer/src/shadcn/*"
+      ],
+      "@icons": [
+        "src/renderer/src/icons/index.ts"
+      ],
+      "@icons/*": ["src/renderer/src/icons/*"]
+    }
+  }
+}

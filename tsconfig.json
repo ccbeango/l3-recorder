@@ -1,0 +1,29 @@
+{
+  "files": [],
+  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@renderer/*": [
+        "src/renderer/src/*"
+      ],
+      "@types": [
+        "src/types/index.ts"
+      ],
+      "@types/*": [
+        "src/types/*"
+      ],
+      "@shadcn": [
+        "src/renderer/src/shadcn/index.ts"
+      ],
+      "@shadcn/*": [
+        "src/renderer/src/shadcn/*"
+      ],
+      "@icons": [
+        "src/renderer/src/icons/index.ts"
+      ],
+      "@icons/*": ["src/renderer/src/icons/*"]
+    }
+  }
+}

@@ -1,0 +1,36 @@
+<script setup lang="ts">
+import type { TooltipContentProps } from 'reka-ui';
+
+import type { StyleValue } from 'vue';
+
+import type { ClassType } from '@renderer/types';
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../../ui';
+
+interface Props {
+  contentClass?: ClassType;
+  contentStyle?: StyleValue;
+  delayDuration?: number;
+  side?: TooltipContentProps['side'];
+}
+
+const { delayDuration = 0, side = 'top' } = defineProps<Props>();
+</script>
+
+<template>
+  <TooltipProvider :delay-duration="delayDuration">
+    <Tooltip>
+      <TooltipTrigger as-child tabindex="-1">
+        <slot name="trigger"></slot>
+      </TooltipTrigger>
+      <TooltipContent :class="contentClass" :side="side" :style="contentStyle">
+        <slot></slot>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+</template>
