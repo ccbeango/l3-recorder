@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { MicIcon, MicOffIcon, VideoIcon, VideoOffIcon, DiscIcon } from '@icons';
-import { L3Button } from '@shadcn';
+import {
+  MicIcon,
+  MicOffIcon,
+  DiscIcon,
+  PlayIcon,
+  SquareIcon,
+  SquarePauseIcon,
+} from '@icons';
 import { ref } from 'vue';
 
 import { Header } from '../../components/header';
-import { RecordingIcon, useRecordTimer } from '../../components/recording';
+import { useRecordTimer } from '../../components/recording';
 import { L3MediaRecorder } from '../../media-recorder';
+import Item from './components/Item.vue';
+import ToggleItem from './components/ToggleItem.vue';
 
 const [RecordingTimer, timerApi] = useRecordTimer();
 
-const videoOn = ref(false);
 const micOn = ref(true);
 
 const isRecording = ref(false); // 是否开始录制，暂停也是正在录制中的状态
@@ -79,6 +86,7 @@ async function startRecording() {
 
   setIsRecording(true);
   timerApi.start();
+  console.log('开始录像...');
 }
 
 async function cropStream() {
@@ -121,6 +129,11 @@ async function handleStopRecord() {
   worker.postMessage({
     status: 'stop',
   });
+
+  setIsRecording(false);
+  setIsPaused(false);
+  timerApi.reset();
+  console.log('录像完成！');
 }
 
 function exportRecording() {
@@ -139,27 +152,33 @@ function exportRecording() {
 
 // 暂停录制
 function pauseRecording() {
-  if (
-    !isPaused.value &&
-    mediaRecorder3.value?.getMediaRecorderState() === 'recording'
-  ) {
-    mediaRecorder3.value.pause();
-    setIsPaused(true);
-    timerApi.pause();
-    console.log('录像已暂停');
-  }
+  mediaRecorder3.value?.pause();
+  setIsPaused(true);
+  timerApi.pause();
+  console.log('录像已暂停');
 }
 
 // 恢复录制
 function resumeRecording() {
+  mediaRecorder3.value?.resume();
+  setIsPaused(false);
+  timerApi.start();
+  console.log('恢复录像...');
+}
+
+function switchRecord() {
   if (
     isPaused.value &&
+    mediaRecorder3.value?.getMediaRecorderState() === 'recording'
+  ) {
+    pauseRecording();
+  }
+
+  if (
+    !isPaused.value &&
     mediaRecorder3.value?.getMediaRecorderState() === 'paused'
   ) {
-    mediaRecorder3.value.resume();
-    setIsPaused(false);
-    timerApi.start();
-    console.log('恢复录像...');
+    resumeRecording();
   }
 }
 
@@ -171,46 +190,46 @@ function toggleMic() {
 <template>
   <div class="fixed inset-0 overflow-hidden">
     <Header from="recorderScreen"></Header>
-    <div class="h-full w-full">
-      <div class="flex p-4">
-        <div class="ml-6 flex items-center space-x-2">
-          <DiscIcon
-            :class="{ 'animate-record-flash': isRecording && !isPaused }"
-            class="text-destructive size-5"
-          />
-          <RecordingTimer />
-        </div>
-        <div class="flex gap-4">
-          <RecordingIcon
-            v-model="micOn"
-            :icon="MicIcon"
-            :off-icon="MicOffIcon"
-            :text="'麦克风已开'"
-            :off-text="'麦克风已关'"
-            @click="toggleMic"
-          />
-          <RecordingIcon
-            v-model="videoOn"
-            :icon="VideoIcon"
-            :off-icon="VideoOffIcon"
-            :text="'摄像头已开'"
-            :off-text="'摄像头已关'"
-          />
-        </div>
-        <div class="mb-4 space-x-4">
-          <L3Button @click="startRecording"> 开始录制 </L3Button>
-          <L3Button
-            v-if="isPaused"
-            :rounded="false"
-            variant="link"
-            @click="resumeRecording"
-          >
-            恢复录制
-          </L3Button>
-          <L3Button @click="pauseRecording"> 暂停录制 </L3Button>
-          <L3Button @click="handleStopRecord"> 停止录制 </L3Button>
-        </div>
+    <div class="flex h-22 w-full items-center space-x-9 pl-7">
+      <div class="ml-6 flex flex-col items-center justify-center space-x-2">
+        <DiscIcon
+          :class="{ 'animate-record-flash': isRecording && !isPaused }"
+          class="text-destructive size-7"
+        />
+        <RecordingTimer class="mt-1" />
       </div>
+      <ToggleItem
+        v-model="micOn"
+        :icon="MicIcon"
+        :off-icon="MicOffIcon"
+        :text="'麦克风已开'"
+        :off-text="'麦克风已关'"
+        @click="toggleMic"
+      />
+      <div class="h-11 border"></div>
+
+      <Item
+        v-if="!isRecording"
+        :icon="PlayIcon"
+        :text="'开始'"
+        @click="startRecording"
+      />
+      <template v-else>
+        <ToggleItem
+          v-model="isPaused"
+          :icon="PlayIcon"
+          :off-icon="SquarePauseIcon"
+          :text="'恢复'"
+          :off-text="'暂停'"
+          @change="switchRecord"
+        />
+        <Item
+          v-if="isRecording"
+          :icon="SquareIcon"
+          :text="'停止'"
+          @click="handleStopRecord"
+        />
+      </template>
     </div>
   </div>
 </template>

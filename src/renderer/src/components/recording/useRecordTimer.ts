@@ -1,8 +1,10 @@
 import type { RecordingTimerProps } from './types';
+
 import { defineComponent, h, ref, watch } from 'vue';
+
 import RecordingTimer from './RecordingTimer.vue';
 
-export default function useRecordingTimer() {
+export default function useRecordTimer() {
   const startTime = ref(0);
   const setStartTime = (val) => (startTime.value = val);
   const elapsedTime = ref(0);

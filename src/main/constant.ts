@@ -43,7 +43,7 @@ export const WINDOW_CONFIG: Record<WinName, WinOptions> = {
   recorderScreen: {
     html: 'recorderScreen.html',
     width: 513,
-    height: 88,
+    height: 116,
     maximizable: false,
     resizable: false,
     frame: false,

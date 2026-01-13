@@ -171,8 +171,7 @@ onMounted(() => {
         :class="{ 'animate-record-flash': isRecording && !isPaused }"
         class="text-destructive size-5"
       />
-      <RecordingTimer />
-      <!-- <div class="text-xs text-white">暂停中...</div> -->
+      <RecordingTimer class="text-white" />
     </div>
 
     <div class="mx-4 h-7 border-x border-white/8"></div>

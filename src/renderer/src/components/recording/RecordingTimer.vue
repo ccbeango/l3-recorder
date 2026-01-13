@@ -24,7 +24,7 @@ const showTime = computed(() => {
 </script>
 
 <template>
-  <div class="text-xs text-white">
+  <div class="text-primary text-xs">
     {{ showTime }}
   </div>
 </template>
