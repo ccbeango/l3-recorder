@@ -34,6 +34,9 @@ const mediaRecorder3 = ref<L3MediaRecorder>(); // 媒体录制器对象
 async function startRecording() {
   console.log('开始录制');
 
+  // 通知其它窗口已开启录制
+  window.electronAPI.sendRsNotifyRecordingState(true);
+
   const { source, width, height, scaleFactor } =
     await window.electronAPI.invokeRfsGetDesktopCapturerSource();
   const constraints: any = {
@@ -130,6 +133,9 @@ async function handleStopRecord() {
     status: 'stop',
   });
 
+  // 通知其它窗口已停止录制
+  window.electronAPI.sendRsNotifyRecordingState(false);
+
   setIsRecording(false);
   setIsPaused(false);
   timerApi.reset();
@@ -189,7 +195,7 @@ function toggleMic() {
 
 <template>
   <div class="fixed inset-0 overflow-hidden">
-    <Header from="recorderScreen"></Header>
+    <Header from="recorderScreen" :disable-close="isRecording"></Header>
     <div class="flex h-22 w-full items-center space-x-9 pl-7">
       <div class="ml-6 flex flex-col items-center justify-center space-x-2">
         <DiscIcon

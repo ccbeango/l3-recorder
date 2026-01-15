@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { MoveIcon } from '@icons';
 import { cn } from '@shadcn';
-import { onMounted, useTemplateRef } from 'vue';
+import { onMounted, ref, useTemplateRef } from 'vue';
+
+const isRecording = ref(false);
 
 function onMouseover() {
   window.electronAPI.sendRsIgnoreMouseEvent(false);
@@ -13,6 +15,11 @@ onMounted(() => {
     if (e.target === elRef.value) {
       window.electronAPI.sendRsIgnoreMouseEvent(true);
     }
+  });
+
+  // 监听录制状态变化
+  window.electronAPI.onRsRecordingStateChange((recording: boolean) => {
+    isRecording.value = recording;
   });
 });
 
@@ -27,6 +34,7 @@ const corners = ['br', 'bl', 'tl', 'tr'];
     >
       <div
         v-for="co in corners"
+        v-show="!isRecording"
         :key="co"
         role="rb-move"
         :class="

@@ -8,6 +8,7 @@ import { WINDOW_CONFIG } from '../constant';
 export default class RecorderSourceClipWin extends BaseWin {
   isMoving: boolean;
   lastValidBounds: Bounds | null = null;
+  movable: boolean = true;
 
   constructor(options?: WinOptions | Bounds) {
     super({ ...WINDOW_CONFIG.recorderSourceClip, ...options });
@@ -31,6 +32,15 @@ export default class RecorderSourceClipWin extends BaseWin {
     });
   }
 
+  setMovable(movable: boolean) {
+    this.movable = movable;
+    if (!movable) {
+      this.win?.setMovable(false);
+    } else {
+      this.win?.setMovable(true);
+    }
+  }
+
   getAreaBounds() {
     return this.win?.getBounds();
   }
@@ -39,7 +49,10 @@ export default class RecorderSourceClipWin extends BaseWin {
     if (!this.win) return;
 
     this.win.on('will-move', (event, newBounds) => {
-      if (this.isMoving) return;
+      if (this.isMoving || !this.movable) {
+        event.preventDefault();
+        return;
+      }
 
       const displays = screen.getAllDisplays();
       const [winWidth, winHeight] = this.win!.getSize();

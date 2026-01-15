@@ -14,6 +14,7 @@ function handleClick() {
 // }
 
 function handleRshClick() {
+  window.electronAPI.sendMinWin('main');
   window.electronAPI.sendRsSelectAreaOpenWin();
 }
 </script>
