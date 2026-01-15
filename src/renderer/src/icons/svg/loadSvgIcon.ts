@@ -1,51 +1,51 @@
-import type { IconifyIcon } from '@iconify/vue'
+import type { IconifyIcon } from '@iconify/vue';
 
-import { addIcon } from '@iconify/vue'
+import { addIcon } from '@iconify/vue';
 
-let loaded = false
+let loaded = false;
 
 if (!loaded) {
-  loadSvgIcons()
-  loaded = true
+  loadSvgIcons();
+  loaded = true;
 }
 
 function parseSvg(svgData: string): IconifyIcon {
-  const parser = new DOMParser()
-  const xmlDoc = parser.parseFromString(svgData, 'image/svg+xml')
-  const svgElement = xmlDoc.documentElement
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(svgData, 'image/svg+xml');
+  const svgElement = xmlDoc.documentElement;
 
   const svgContent = [...svgElement.childNodes]
     .filter((node) => node.nodeType === Node.ELEMENT_NODE)
     .map((node) => new XMLSerializer().serializeToString(node))
-    .join('')
+    .join('');
 
-  const viewBoxValue = svgElement.getAttribute('viewBox') || ''
+  const viewBoxValue = svgElement.getAttribute('viewBox') || '';
   const [left, top, width, height] = viewBoxValue.split(' ').map((val) => {
-    const num = Number(val)
-    return Number.isNaN(num) ? undefined : num
-  })
+    const num = Number(val);
+    return Number.isNaN(num) ? undefined : num;
+  });
 
-  return { body: svgContent, height, left, top, width }
+  return { body: svgContent, height, left, top, width };
 }
 
 async function loadSvgIcons() {
   const svgEagers = import.meta.glob('./icons/**', {
     eager: true,
-    query: '?raw'
-  })
+    query: '?raw',
+  });
 
   await Promise.all(
     Object.entries(svgEagers).map((svg) => {
-      const [key, body] = svg as [string, string | { default: string }]
+      const [key, body] = svg as [string, string | { default: string }];
 
       // ./icons/xxxx.svg => xxxxxx
-      const start = key.lastIndexOf('/') + 1
-      const end = key.lastIndexOf('.')
-      const iconName = key.slice(start, end)
+      const start = key.lastIndexOf('/') + 1;
+      const end = key.lastIndexOf('.');
+      const iconName = key.slice(start, end);
 
       return addIcon(`svg:${iconName}`, {
-        ...parseSvg(typeof body === 'object' ? body.default : body)
-      })
-    })
-  )
+        ...parseSvg(typeof body === 'object' ? body.default : body),
+      });
+    }),
+  );
 }

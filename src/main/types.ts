@@ -3,7 +3,8 @@ export type WinName =
   | 'recorderFullScreen'
   | 'recorderScreen'
   | 'recorderShot'
-  | 'recorderSourceClip';
+  | 'recorderSourceClip'
+  | 'settings';
 
 export interface WinOptions extends Electron.BrowserWindowConstructorOptions {
   // width: number;

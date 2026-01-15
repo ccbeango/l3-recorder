@@ -33,7 +33,7 @@ export default defineConfig({
   },
   renderer: {
     server: {
-      port: 9099,
+      port: 19099,
     },
     resolve: {
       alias: {

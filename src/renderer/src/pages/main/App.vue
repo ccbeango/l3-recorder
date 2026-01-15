@@ -4,6 +4,10 @@ import { L3IconButton } from '@shadcn';
 
 import StartPanel from './components/panel/StartPanel.vue';
 import { Header } from '../../components/header';
+
+function openSettings() {
+  window.electronAPI.sendSettingsOpenWin();
+}
 </script>
 
 <template>
@@ -13,7 +17,10 @@ import { Header } from '../../components/header';
       class="relative h-[calc(100%-28px)] w-full bg-[url(@renderer/assets/wavy-lines.svg)] bg-cover select-none"
     >
       <StartPanel />
-      <L3IconButton class="absolute bottom-2 left-2 size-6 rounded-sm">
+      <L3IconButton
+        class="absolute bottom-2 left-2 size-6 rounded-sm"
+        @click="openSettings"
+      >
         <SettingsIcon class="size-4" />
       </L3IconButton>
     </div>

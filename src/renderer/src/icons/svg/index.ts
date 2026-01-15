@@ -1,6 +1,6 @@
-import { createIcon } from '../utils'
+import { createIcon } from '../utils';
 
-import './loadSvgIcon'
+import './loadSvgIcon';
 
-export const SvgCloudVideoIcon = createIcon('svg:cloud-video')
-export const SvgAddIcon = createIcon('svg:add')
+export const SvgCloudVideoIcon = createIcon('svg:cloud-video');
+export const SvgAddIcon = createIcon('svg:add');

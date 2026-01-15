@@ -78,4 +78,14 @@ export const WINDOW_CONFIG: Record<WinName, WinOptions> = {
     skipTaskbar: false,
     readyToShow: true,
   },
+  settings: {
+    title: '设置',
+    html: 'settings.html',
+    width: 800,
+    height: 600,
+    maximizable: false,
+    resizable: false,
+    frame: false,
+    readyToShow: true,
+  },
 };

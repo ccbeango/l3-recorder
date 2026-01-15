@@ -61,6 +61,24 @@ const electronIpcApi: ElectronIpcApi = {
       IPC_CHANNELS.RS_SOURCE_CLIP.SET_IGNOGE_MOUSE_EVENT,
       val,
     ),
+  sendRsNotifyRecordingState: (isRecording: boolean) =>
+    electronAPI.ipcRenderer.send(
+      IPC_CHANNELS.RS_SOURCE_CLIP.SET_MOVABLE,
+      isRecording,
+    ),
+  onRsRecordingStateChange: (callback) =>
+    electronAPI.ipcRenderer.on(
+      IPC_CHANNELS.RS_SOURCE_CLIP.ON_RECORDING_STATE_CHANGE,
+      (_, isRecording) => {
+        callback(isRecording);
+      },
+    ),
+
+  // 设置窗口
+  sendSettingsOpenWin: () =>
+    electronAPI.ipcRenderer.send(IPC_CHANNELS.SETTINGS.OPEN_WIN),
+  sendSettingsClose: () =>
+    electronAPI.ipcRenderer.send(IPC_CHANNELS.SETTINGS.CLOSE_WIN),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to

@@ -9,6 +9,7 @@ interface Props {
   closable?: boolean;
   maxable?: boolean;
   minable?: boolean;
+  disableClose?: boolean;
   from?: WinName;
 }
 
@@ -16,6 +17,7 @@ const {
   maxable = false,
   minable = true,
   closable = true,
+  disableClose = false,
   from,
 } = defineProps<Props>();
 
@@ -82,6 +84,7 @@ function handleClose() {
       </L3IconButton>
       <L3IconButton
         v-if="closable"
+        :disabled="disableClose"
         class="size-5 rounded-xs"
         @click="handleClose"
       >

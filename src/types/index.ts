@@ -3,7 +3,8 @@ export type WinName =
   | 'recorderFullScreen'
   | 'recorderScreen'
   | 'recorderShot'
-  | 'recorderSourceClip';
+  | 'recorderSourceClip'
+  | 'settings';
 
 export const IPC_CHANNELS = {
   Ping: 'ping',
@@ -37,6 +38,14 @@ export const IPC_CHANNELS = {
     INVOKE_DESKTOP_CAPTURER_SOURCE: 'rs:invoke-desktop-capturer-source',
     DOWNLOAD: 'rs:download',
     SET_IGNOGE_MOUSE_EVENT: 'rs:set-ignore-mouse-event',
+    ON_RECORDING_STATE_CHANGE: 'rs:on-recording-state-change',
+    SET_MOVABLE: 'rs:set-movable',
+  },
+
+  /** 设置窗口 */
+  SETTINGS: {
+    OPEN_WIN: 'settings:open-win',
+    CLOSE_WIN: 'settings:close-win',
   },
 } as const;
 
@@ -72,4 +81,10 @@ export interface ElectronIpcApi {
   invokeRsGetDesktopCapturerSource: () => Promise<any>;
   sendRsDownloadVideo: (req: { url: string; filename: string }) => void;
   sendRsIgnoreMouseEvent: (val: boolean) => void;
+  sendRsNotifyRecordingState: (isRecording: boolean) => void;
+  onRsRecordingStateChange: (callback: (isRecording: boolean) => void) => void;
+
+  // 设置窗口相关
+  sendSettingsOpenWin: () => void;
+  sendSettingsClose: () => void;
 }

@@ -9,6 +9,7 @@ import RecordFullScreenWin from './win/recorderFullScreenWin';
 import RecorderScreenWin from './win/recorderScreenWin';
 import RecorderShotWin from './win/recorderShotWin';
 import RecorderSourceClipWin from './win/recorderSourceClipWin';
+import SettingsWin from './win/settingsWin';
 
 import { IPC_CHANNELS } from '@/types';
 
@@ -18,6 +19,7 @@ interface WinsMap {
   recorderScreen: RecorderScreenWin | null;
   recorderShot: RecorderShotWin | null;
   recorderSourceClip: RecorderSourceClipWin | null;
+  settings: SettingsWin | null;
 }
 
 const winsMap: Omit<WinsMap, 'main'> = {
@@ -26,6 +28,7 @@ const winsMap: Omit<WinsMap, 'main'> = {
   recorderScreen: null,
   recorderShot: null,
   recorderSourceClip: null,
+  settings: null,
 };
 
 export default function initIpcMain() {
@@ -157,6 +160,16 @@ export default function initIpcMain() {
       winsMap.recorderSourceClip?.ignoreMouseEvents(bol);
     },
   );
+  ipcMain.on(
+    IPC_CHANNELS.RS_SOURCE_CLIP.SET_MOVABLE,
+    (_, isRecording: boolean) => {
+      winsMap.recorderSourceClip?.setMovable(!isRecording);
+      winsMap.recorderSourceClip?.win?.webContents.send(
+        IPC_CHANNELS.RS_SOURCE_CLIP.ON_RECORDING_STATE_CHANGE,
+        isRecording,
+      );
+    },
+  );
   ipcMain.on(IPC_CHANNELS.RS_SOURCE_CLIP.DOWNLOAD, (_, file) => {
     winsMap.recorderSourceClip?.win!.webContents.downloadURL(file.url);
     winsMap.recorderSourceClip?.win!.webContents.session.once(
@@ -167,6 +180,26 @@ export default function initIpcMain() {
         });
       },
     );
+  });
+  //#endregion
+
+  //#region 设置窗口
+  ipcMain.on(IPC_CHANNELS.SETTINGS.OPEN_WIN, () => {
+    if (!winsMap.settings || winsMap.settings.win?.isDestroyed()) {
+      winsMap.settings = new SettingsWin();
+
+      // 监听窗口关闭事件，清除引用
+      winsMap.settings.win?.on('closed', () => {
+        winsMap.settings = null;
+      });
+    } else {
+      winsMap.settings.win?.show();
+      winsMap.settings.win?.focus();
+    }
+  });
+
+  ipcMain.on(IPC_CHANNELS.SETTINGS.CLOSE_WIN, () => {
+    winsMap.settings?.close();
   });
   //#endregion
 }
