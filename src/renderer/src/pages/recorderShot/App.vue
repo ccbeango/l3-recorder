@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useTheme } from '@renderer/composables/useTheme';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 
 import ShotBackground from './components/shotBackground.vue';
@@ -6,6 +7,8 @@ import ShotCanvas from './components/shotCanvas.vue';
 import ShotOperations from './components/shotOperations.vue';
 import useGetLoadedImage from './composable/useGetLoadedImage';
 import { useRecorderShotsProvider } from './composable/useShotContext';
+
+useTheme();
 
 const canvasRef = useTemplateRef<typeof ShotCanvas>('canvasRef');
 

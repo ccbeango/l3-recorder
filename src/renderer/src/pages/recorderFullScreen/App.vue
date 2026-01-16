@@ -10,11 +10,14 @@ import {
   XIcon,
   DiscIcon,
 } from '@icons';
+import { useTheme } from '@renderer/composables/useTheme';
 import { L3IconButton } from '@shadcn';
 import { onMounted, ref } from 'vue';
 
 import { RecordingIcon, useRecordTimer } from '../../components/recording';
 import { L3MediaRecorder } from '../../media-recorder';
+
+useTheme();
 
 const [RecordingTimer, timerApi] = useRecordTimer();
 
@@ -165,16 +168,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex size-full items-center bg-[#232628]">
+  <div
+    class="bg-background flex size-full items-center border shadow-xl dark:border-white/10 dark:bg-white/5"
+  >
     <div class="ml-6 flex items-center space-x-2">
       <DiscIcon
         :class="{ 'animate-record-flash': isRecording && !isPaused }"
         class="text-destructive size-5"
       />
-      <RecordingTimer class="text-white" />
+      <RecordingTimer class="text-primary" />
     </div>
 
-    <div class="mx-4 h-7 border-x border-white/8"></div>
+    <div class="border-border mx-4 h-7 border-x dark:border-white/10"></div>
     <div class="flex gap-4">
       <RecordingIcon
         v-model="micOn"
@@ -192,7 +197,7 @@ onMounted(() => {
         :off-text="'摄像头已关'"
       />
     </div>
-    <div class="mx-4 h-7 border-x border-white/8"></div>
+    <div class="border-border mx-4 h-7 border-x dark:border-white/10"></div>
     <div class="flex space-x-1">
       <L3IconButton
         v-if="!isRecording"

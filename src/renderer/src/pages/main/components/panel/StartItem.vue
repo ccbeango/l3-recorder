@@ -13,7 +13,7 @@ const { title, icon } = defineProps<Props>();
 
 <template>
   <div
-    class="bg-card flex h-27.5 w-30 flex-col rounded-lg border shadow-xl duration-150 ease-in-out hover:-translate-y-1 hover:shadow-xl/20"
+    class="bg-card flex h-27.5 w-30 cursor-pointer flex-col rounded-lg border shadow-xl duration-150 ease-in-out hover:-translate-y-1 hover:shadow-xl/20 dark:border-border dark:bg-muted/30 dark:hover:bg-muted/50"
   >
     <!-- <SvgAddIcon class="mt-6 ml-6 size-10 rounded-md" /> -->
     <component :is="icon" class="mt-6 ml-6 size-10 rounded-md"></component>

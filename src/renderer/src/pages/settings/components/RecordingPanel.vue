@@ -1,13 +1,6 @@
 <script setup lang="ts">
+import { L3Select, L3Switch, L3Input, L3Button, L3Label } from '@shadcn';
 import { ref } from 'vue';
-import {
-  L3Select,
-  L3Option,
-  L3Switch,
-  L3Input,
-  L3Button,
-  L3Label,
-} from '@shadcn';
 
 const quality = ref('high');
 const fps = ref('60');
@@ -42,7 +35,7 @@ const audioSourceOptions = [
       <h2 class="mb-4 text-lg font-semibold">录制设置</h2>
       <div class="space-y-2">
         <div
-          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors"
+          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors dark:border-white/5 dark:bg-white/2 dark:hover:bg-white/5"
         >
           <L3Label class="flex flex-col items-start gap-1 text-left">
             <span class="font-medium">视频质量</span>
@@ -59,7 +52,7 @@ const audioSourceOptions = [
         </div>
 
         <div
-          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors"
+          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors dark:border-white/5 dark:bg-white/2 dark:hover:bg-white/5"
         >
           <L3Label class="flex flex-col items-start gap-1 text-left">
             <span class="font-medium">帧率</span>
@@ -76,7 +69,7 @@ const audioSourceOptions = [
         </div>
 
         <div
-          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors"
+          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors dark:border-white/5 dark:bg-white/2 dark:hover:bg-white/5"
         >
           <L3Label class="flex flex-col items-start gap-1 text-left">
             <span class="font-medium">音频源</span>
@@ -93,7 +86,7 @@ const audioSourceOptions = [
         </div>
 
         <div
-          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors"
+          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors dark:border-white/5 dark:bg-white/2 dark:hover:bg-white/5"
         >
           <L3Label class="flex flex-col items-start gap-1 text-left">
             <span class="font-medium">保存路径</span>

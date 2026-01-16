@@ -161,12 +161,12 @@ onMounted(() => {
   <div
     ref="elRef"
     role="magnifier"
-    class="absolute top-0 left-0 w-25 bg-amber-50 shadow-md select-none"
+    class="bg-background border-border absolute top-0 left-0 w-25 border shadow-md select-none dark:border-white/10 dark:bg-white/5"
     :style="{
       transform: `translate(${position?.x}px, ${position?.y}px)`,
     }"
   >
-    <div role="body" class="shot-magnifier-cross">
+    <div role="body" class="shot-magnifier-cross border-b dark:border-white/10">
       <canvas
         ref="canvasRef"
         role="magnifier-canvas"
@@ -176,7 +176,7 @@ onMounted(() => {
     </div>
     <div
       role="footer"
-      class="h-10 overflow-hidden bg-gray-500 p-1 text-center text-xs whitespace-nowrap text-white"
+      class="bg-muted text-muted-foreground h-10 overflow-hidden p-1 text-center text-xs whitespace-nowrap dark:bg-black/20"
     >
       <div role="item" class="">pos: ({{ x }},{{ y }})</div>
       <div role="item" class="">rgb: #{{ rgb }}</div>

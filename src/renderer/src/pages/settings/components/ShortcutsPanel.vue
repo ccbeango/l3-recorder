@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { L3Button } from '@shadcn';
+import { ref } from 'vue';
 
 const shortcuts = ref([
   {
@@ -52,7 +52,7 @@ function saveEdit() {
         <div
           v-for="(shortcut, index) in shortcuts"
           :key="index"
-          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors"
+          class="hover:bg-accent/50 flex items-center justify-between rounded-md border px-4 py-3 transition-colors dark:border-white/5 dark:bg-white/2 dark:hover:bg-white/5"
         >
           <div class="flex-1">
             <div class="font-medium">{{ shortcut.name }}</div>

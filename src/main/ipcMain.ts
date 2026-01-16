@@ -1,8 +1,8 @@
 import type { Bounds } from './types';
 import type BaseWin from './win/baseWin';
-import type { WinName } from '@/types';
+import type { WinName, ThemeColor } from '@/types';
 
-import { desktopCapturer, ipcMain, screen } from 'electron';
+import { BrowserWindow, desktopCapturer, ipcMain, screen } from 'electron';
 
 import MainWin from './win/mainWin';
 import RecordFullScreenWin from './win/recorderFullScreenWin';
@@ -30,6 +30,9 @@ const winsMap: Omit<WinsMap, 'main'> = {
   recorderSourceClip: null,
   settings: null,
 };
+
+let currentTheme: 'light' | 'dark' | 'system' = 'system';
+let currentThemeColor: ThemeColor = 'violet';
 
 export default function initIpcMain() {
   //#region 通用基础功能
@@ -200,6 +203,37 @@ export default function initIpcMain() {
 
   ipcMain.on(IPC_CHANNELS.SETTINGS.CLOSE_WIN, () => {
     winsMap.settings?.close();
+  });
+  //#endregion
+
+  //#region 主题
+  ipcMain.on(
+    IPC_CHANNELS.THEME.SET,
+    (_, theme: 'light' | 'dark' | 'system') => {
+      currentTheme = theme;
+      // 通知所有窗口
+      const allWindows = BrowserWindow.getAllWindows();
+      allWindows.forEach((win) => {
+        win.webContents.send(IPC_CHANNELS.THEME.ON_CHANGE, theme);
+      });
+    },
+  );
+
+  ipcMain.handle(IPC_CHANNELS.THEME.GET, () => {
+    return currentTheme;
+  });
+
+  ipcMain.on(IPC_CHANNELS.THEME.COLOR_SET, (_, themeColor: ThemeColor) => {
+    currentThemeColor = themeColor;
+    // 通知所有窗口
+    const allWindows = BrowserWindow.getAllWindows();
+    allWindows.forEach((win) => {
+      win.webContents.send(IPC_CHANNELS.THEME.COLOR_ON_CHANGE, themeColor);
+    });
+  });
+
+  ipcMain.handle(IPC_CHANNELS.THEME.COLOR_GET, () => {
+    return currentThemeColor;
   });
   //#endregion
 }

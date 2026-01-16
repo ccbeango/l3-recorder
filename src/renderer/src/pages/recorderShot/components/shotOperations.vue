@@ -118,7 +118,7 @@ function handleConfirm() {
   >
     <div
       role="buttons"
-      class="flex items-center overflow-hidden rounded-xs border border-black/30 bg-white p-1"
+      class="bg-background border-border flex items-center overflow-hidden rounded-xs border p-1 shadow-lg dark:border-white/10 dark:bg-white/5"
     >
       <L3IconButton :rounded="false" @click="handleCancel">
         <XIcon class="size-5" />

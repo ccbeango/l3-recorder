@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { MoveIcon } from '@icons';
+import { useTheme } from '@renderer/composables/useTheme';
 import { cn } from '@shadcn';
 import { onMounted, ref, useTemplateRef } from 'vue';
+
+useTheme();
 
 const isRecording = ref(false);
 
@@ -30,7 +33,7 @@ const corners = ['br', 'bl', 'tl', 'tr'];
   <div class="backgr fixed inset-0 overflow-hidden">
     <div
       ref="elRef"
-      class="h-[calc(100%-1px)] w-[calc(100%-1px)] border border-blue-300"
+      class="border-ring dark:border-ring/50 h-[calc(100%-1px)] w-[calc(100%-1px)] border"
     >
       <div
         v-for="co in corners"
@@ -38,7 +41,7 @@ const corners = ['br', 'bl', 'tl', 'tr'];
         :key="co"
         role="rb-move"
         :class="
-          cn('absolute z-40 overflow-hidden bg-blue-300', {
+          cn('bg-ring dark:bg-ring/80 absolute z-40 overflow-hidden', {
             'top-0 left-0 rounded-br-sm': co === 'br',
             'top-0 right-0 rounded-bl-sm': co === 'bl',
             'right-0 bottom-0 rounded-tl-sm': co === 'tl',
@@ -54,6 +57,9 @@ const corners = ['br', 'bl', 'tl', 'tr'];
 </template>
 
 <style>
+body {
+  background: transparent;
+}
 #app {
   width: 100vw;
   height: 100vh;

@@ -7,6 +7,7 @@ import {
   SquareIcon,
   SquarePauseIcon,
 } from '@icons';
+import { useTheme } from '@renderer/composables/useTheme';
 import { ref } from 'vue';
 
 import { Header } from '../../components/header';
@@ -14,6 +15,8 @@ import { useRecordTimer } from '../../components/recording';
 import { L3MediaRecorder } from '../../media-recorder';
 import Item from './components/Item.vue';
 import ToggleItem from './components/ToggleItem.vue';
+
+useTheme();
 
 const [RecordingTimer, timerApi] = useRecordTimer();
 
@@ -25,7 +28,7 @@ const setIsRecording = (val: boolean) => (isRecording.value = val);
 const isPaused = ref(false);
 const setIsPaused = (val: boolean) => (isPaused.value = val);
 
-const worker = new Worker(new URL('./worker.js', import.meta.url), {
+const worker = new Worker('./worker.js', {
   name: 'Crop worker',
 });
 
@@ -194,7 +197,9 @@ function toggleMic() {
 </script>
 
 <template>
-  <div class="fixed inset-0 overflow-hidden">
+  <div
+    class="bg-background text-foreground dark:bg-muted/30 fixed inset-0 overflow-hidden border shadow-2xl"
+  >
     <Header from="recorderScreen" :disable-close="isRecording"></Header>
     <div class="flex h-22 w-full items-center space-x-9 pl-7">
       <div class="ml-6 flex flex-col items-center justify-center space-x-2">

@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useTheme } from '@renderer/composables/useTheme';
 import {
   L3SidebarProvider,
   L3Sidebar,
   L3SidebarItem,
   L3SidebarInset,
 } from '@shadcn';
-import { Header } from '../../components/header';
+import { ref } from 'vue';
+
 import GeneralPanel from './components/GeneralPanel.vue';
 import RecordingPanel from './components/RecordingPanel.vue';
 import ShortcutsPanel from './components/ShortcutsPanel.vue';
+import { Header } from '../../components/header';
+
+useTheme();
 
 const activeTab = ref('general');
 </script>
@@ -23,7 +27,10 @@ const activeTab = ref('general');
         :default-open="true"
         :style="{ '--sidebar-width': '12rem' }"
       >
-        <L3Sidebar class="h-full border-r pt-0" collapsible="none">
+        <L3Sidebar
+          class="h-full border-r pt-0 dark:border-white/5 dark:bg-white/2"
+          collapsible="none"
+        >
           <L3SidebarItem
             :is-active="activeTab === 'general'"
             @click="activeTab = 'general'"

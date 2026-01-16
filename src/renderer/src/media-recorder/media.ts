@@ -30,7 +30,7 @@ export default class L3MediaRecorder extends L3EventEmitter {
 
   private timeSlice: number | undefined = undefined;
 
-  private sysMute: boolean = false;
+  // private sysMute: boolean = false;
 
   private micMute: boolean = false;
   private micStream: MediaStream | null = null;
@@ -60,9 +60,9 @@ export default class L3MediaRecorder extends L3EventEmitter {
     this.micMute = isMute;
   }
 
-  setSysMute(isMute: boolean) {
-    this.sysMute = isMute;
-  }
+  // setSysMute(isMute: boolean) {
+  //   this.sysMute = isMute;
+  // }
 
   setConfig(options?: VideoOptions) {
     switch (this.mediaType) {

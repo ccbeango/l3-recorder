@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { SettingsIcon } from '@icons';
+import { useTheme } from '@renderer/composables/useTheme';
 import { L3IconButton } from '@shadcn';
 
 import StartPanel from './components/panel/StartPanel.vue';
 import { Header } from '../../components/header';
+
+useTheme();
 
 function openSettings() {
   window.electronAPI.sendSettingsOpenWin();
@@ -14,7 +17,7 @@ function openSettings() {
   <div class="size-full">
     <Header from="main" maxable></Header>
     <div
-      class="relative h-[calc(100%-28px)] w-full bg-[url(@renderer/assets/wavy-lines.svg)] bg-cover select-none"
+      class="relative h-[calc(100%-28px)] w-full bg-[url(@renderer/assets/wavy-lines.svg)] bg-cover select-none dark:bg-none"
     >
       <StartPanel />
       <L3IconButton

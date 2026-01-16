@@ -56,7 +56,9 @@ function handleClose() {
 </script>
 
 <template>
-  <div class="webkit-app-region-drag flex h-7 items-end justify-end px-4">
+  <div
+    class="webkit-app-region-drag flex h-7 items-end justify-end px-4  dark:border-b dark:border-white/8"
+  >
     <div
       class="webkit-app-region-no-drag flex w-20 items-center justify-end space-x-2"
     >

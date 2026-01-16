@@ -47,6 +47,16 @@ export const IPC_CHANNELS = {
     OPEN_WIN: 'settings:open-win',
     CLOSE_WIN: 'settings:close-win',
   },
+
+  /** 主题 */
+  THEME: {
+    SET: 'theme:set',
+    GET: 'theme:get',
+    ON_CHANGE: 'theme:on-change',
+    COLOR_SET: 'theme-color:set',
+    COLOR_GET: 'theme-color:get',
+    COLOR_ON_CHANGE: 'theme-color:on-change',
+  },
 } as const;
 
 export interface Bounds {
@@ -55,6 +65,21 @@ export interface Bounds {
   width: number;
   height: number;
 }
+
+export type ThemeColor =
+  | 'violet'
+  | 'pink'
+  | 'rose'
+  | 'sky-blue'
+  | 'deep-blue'
+  | 'green'
+  | 'deep-green'
+  | 'orange'
+  | 'yellow'
+  | 'zinc'
+  | 'neutral'
+  | 'slate'
+  | 'gray';
 
 export interface ElectronIpcApi {
   // 基础功能
@@ -87,4 +112,14 @@ export interface ElectronIpcApi {
   // 设置窗口相关
   sendSettingsOpenWin: () => void;
   sendSettingsClose: () => void;
+
+  // 主题相关
+  sendThemeSet: (theme: 'light' | 'dark' | 'system') => void;
+  invokeThemeGet: () => Promise<'light' | 'dark' | 'system'>;
+  onThemeChange: (
+    callback: (theme: 'light' | 'dark' | 'system') => void,
+  ) => void;
+  sendThemeColorSet: (themeColor: ThemeColor) => void;
+  invokeThemeColorGet: () => Promise<ThemeColor>;
+  onThemeColorChange: (callback: (themeColor: ThemeColor) => void) => void;
 }

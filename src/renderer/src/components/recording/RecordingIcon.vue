@@ -18,8 +18,8 @@ const on = defineModel<boolean>({ default: true });
   <div class="flex cursor-pointer flex-col items-center" @click="on = !on">
     <component
       :is="on ? icon : offIcon"
-      class="size-5"
-      :class="[on ? 'text-white' : 'text-red-500']"
+      class="size-5 transition-colors"
+      :class="[on ? 'text-primary' : 'text-destructive']"
       :title="on ? text : offText"
     ></component>
     <div v-if="false" class="mt-1 text-xs text-white">

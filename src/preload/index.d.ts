@@ -1,8 +1,8 @@
-import type { ElectronAPI } from '@electron-toolkit/preload';
+import type { ElectronIpcApi } from '../types';
 
 declare global {
   interface Window {
-    electronAPI: ElectronAPI;
+    electronAPI: ElectronIpcApi;
     api: unknown;
   }
 }

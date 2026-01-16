@@ -79,6 +79,26 @@ const electronIpcApi: ElectronIpcApi = {
     electronAPI.ipcRenderer.send(IPC_CHANNELS.SETTINGS.OPEN_WIN),
   sendSettingsClose: () =>
     electronAPI.ipcRenderer.send(IPC_CHANNELS.SETTINGS.CLOSE_WIN),
+
+  // 主题
+  sendThemeSet: (theme) =>
+    electronAPI.ipcRenderer.send(IPC_CHANNELS.THEME.SET, theme),
+  invokeThemeGet: () => electronAPI.ipcRenderer.invoke(IPC_CHANNELS.THEME.GET),
+  onThemeChange: (callback) =>
+    electronAPI.ipcRenderer.on(IPC_CHANNELS.THEME.ON_CHANGE, (_, theme) => {
+      callback(theme);
+    }),
+  sendThemeColorSet: (themeColor) =>
+    electronAPI.ipcRenderer.send(IPC_CHANNELS.THEME.COLOR_SET, themeColor),
+  invokeThemeColorGet: () =>
+    electronAPI.ipcRenderer.invoke(IPC_CHANNELS.THEME.COLOR_GET),
+  onThemeColorChange: (callback) =>
+    electronAPI.ipcRenderer.on(
+      IPC_CHANNELS.THEME.COLOR_ON_CHANGE,
+      (_, themeColor) => {
+        callback(themeColor);
+      },
+    ),
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
