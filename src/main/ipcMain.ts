@@ -4,7 +4,12 @@ import type { WinName, ThemeColor } from '@/types';
 
 import { BrowserWindow, desktopCapturer, ipcMain, screen } from 'electron';
 
+import {
+  startGlobalMouseListener,
+  stopGlobalMouseListener,
+} from './globalMouseListener';
 import MainWin from './win/mainWin';
+import MouseClickOverlayWin from './win/mouseClickOverlayWin';
 import RecordFullScreenWin from './win/recorderFullScreenWin';
 import RecorderScreenWin from './win/recorderScreenWin';
 import RecorderShotWin from './win/recorderShotWin';
@@ -19,6 +24,7 @@ interface WinsMap {
   recorderScreen: RecorderScreenWin | null;
   recorderShot: RecorderShotWin | null;
   recorderSourceClip: RecorderSourceClipWin | null;
+  mouseClickOverlay: MouseClickOverlayWin | null;
   settings: SettingsWin | null;
 }
 
@@ -28,6 +34,7 @@ const winsMap: Omit<WinsMap, 'main'> = {
   recorderScreen: null,
   recorderShot: null,
   recorderSourceClip: null,
+  mouseClickOverlay: null,
   settings: null,
 };
 
@@ -105,6 +112,29 @@ export default function initIpcMain() {
       },
     );
   });
+
+  // 全屏录制状态变化
+  ipcMain.on(
+    IPC_CHANNELS.RFS.SET_RECORDING_STATE,
+    (_, isRecording: boolean) => {
+      // 录制开始时创建鼠标点击覆盖层并启动全局监听
+      if (isRecording) {
+        if (!winsMap.mouseClickOverlay) {
+          winsMap.mouseClickOverlay = new MouseClickOverlayWin();
+          winsMap.mouseClickOverlay.show();
+          // 全屏录制不需要边界限制，传入 null
+          startGlobalMouseListener(winsMap.mouseClickOverlay.win, null);
+        }
+      } else {
+        // 录制结束时关闭覆盖层并停止监听
+        if (winsMap.mouseClickOverlay) {
+          stopGlobalMouseListener();
+          winsMap.mouseClickOverlay.close();
+          winsMap.mouseClickOverlay = null;
+        }
+      }
+    },
+  );
   //#endregion
 
   //#region 录屏区域选择
@@ -171,6 +201,24 @@ export default function initIpcMain() {
         IPC_CHANNELS.RS_SOURCE_CLIP.ON_RECORDING_STATE_CHANGE,
         isRecording,
       );
+
+      // 录制开始时创建鼠标点击覆盖层并启动全局监听
+      if (isRecording) {
+        if (!winsMap.mouseClickOverlay) {
+          winsMap.mouseClickOverlay = new MouseClickOverlayWin();
+          winsMap.mouseClickOverlay.show();
+          // 获取录制区域边界并启动全局鼠标监听
+          const bounds = winsMap.recorderSourceClip?.getAreaBounds();
+          startGlobalMouseListener(winsMap.mouseClickOverlay.win, bounds);
+        }
+      } else {
+        // 录制结束时关闭覆盖层并停止监听
+        if (winsMap.mouseClickOverlay) {
+          stopGlobalMouseListener();
+          winsMap.mouseClickOverlay.close();
+          winsMap.mouseClickOverlay = null;
+        }
+      }
     },
   );
   ipcMain.on(IPC_CHANNELS.RS_SOURCE_CLIP.DOWNLOAD, (_, file) => {

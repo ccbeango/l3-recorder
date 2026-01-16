@@ -61,6 +61,11 @@ export default defineConfig({
             __dirname,
             'src/renderer/recorderSourceClip.html',
           ),
+          mouseClickOverlay: resolve(
+            __dirname,
+            'src/renderer/mouseClickOverlay.html',
+          ),
+          settings: resolve(__dirname, 'src/renderer/settings.html'),
         },
       },
     },

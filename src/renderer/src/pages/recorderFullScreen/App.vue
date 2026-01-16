@@ -34,6 +34,9 @@ const mediaRecorder = ref<L3MediaRecorder>(); // 媒体录制器对象
 
 // 开始录制
 async function startRecording() {
+  // 通知主进程录制开始
+  window.electronAPI.sendRfsNotifyRecordingState(true);
+
   const { source, width, height, scaleFactor } =
     await window.electronAPI.invokeRfsGetDesktopCapturerSource();
   const constraints: any = {
@@ -127,6 +130,9 @@ function resumeRecording() {
 function stopRecording() {
   if (isRecording.value && mediaRecorder.value) {
     mediaRecorder.value.stop();
+
+    // 通知主进程录制结束
+    window.electronAPI.sendRfsNotifyRecordingState(false);
 
     setIsRecording(false);
     setIsPaused(false);

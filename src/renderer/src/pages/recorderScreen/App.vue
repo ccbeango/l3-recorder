@@ -28,7 +28,7 @@ const setIsRecording = (val: boolean) => (isRecording.value = val);
 const isPaused = ref(false);
 const setIsPaused = (val: boolean) => (isPaused.value = val);
 
-const worker = new Worker('./worker.js', {
+const worker = new Worker(new URL('./worker.js', import.meta.url), {
   name: 'Crop worker',
 });
 

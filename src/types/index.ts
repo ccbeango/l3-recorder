@@ -4,6 +4,7 @@ export type WinName =
   | 'recorderScreen'
   | 'recorderShot'
   | 'recorderSourceClip'
+  | 'mouseClickOverlay'
   | 'settings';
 
 export const IPC_CHANNELS = {
@@ -22,6 +23,7 @@ export const IPC_CHANNELS = {
     DOWNLOAD: 'rfs:download',
     MOUSE_ENTER: 'rfs:win-mouse-enter',
     MOUSE_LEAVE: 'rfs:win-mouse-leave',
+    SET_RECORDING_STATE: 'rfs:set-recording-state',
   },
 
   /** 截屏录制 -> 屏幕区域选择 */
@@ -48,6 +50,10 @@ export const IPC_CHANNELS = {
     CLOSE_WIN: 'settings:close-win',
   },
 
+  /** 鼠标点击覆盖层 */
+  MOUSE_CLICK_OVERLAY: {
+    ON_MOUSE_CLICK: 'mouse-click-overlay:on-mouse-click',
+  },
   /** 主题 */
   THEME: {
     SET: 'theme:set',
@@ -94,6 +100,7 @@ export interface ElectronIpcApi {
   sendRfsDownloadVideo: (req: { url: string; filename: string }) => void;
   sendRfsMouseEnter: () => void;
   sendRfsMouseLeave: () => void;
+  sendRfsNotifyRecordingState: (isRecording: boolean) => void;
 
   // 录屏区域选择相关
   sendRsSelectAreaOpenWin: () => void;
@@ -112,6 +119,9 @@ export interface ElectronIpcApi {
   // 设置窗口相关
   sendSettingsOpenWin: () => void;
   sendSettingsClose: () => void;
+
+  // 鼠标点击覆盖层相关
+  onMouseClick: (callback: (x: number, y: number) => void) => void;
 
   // 主题相关
   sendThemeSet: (theme: 'light' | 'dark' | 'system') => void;

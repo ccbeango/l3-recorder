@@ -29,6 +29,11 @@ const electronIpcApi: ElectronIpcApi = {
     electronAPI.ipcRenderer.send(IPC_CHANNELS.RFS.MOUSE_ENTER),
   sendRfsMouseLeave: () =>
     electronAPI.ipcRenderer.send(IPC_CHANNELS.RFS.MOUSE_LEAVE),
+  sendRfsNotifyRecordingState: (isRecording: boolean) =>
+    electronAPI.ipcRenderer.send(
+      IPC_CHANNELS.RFS.SET_RECORDING_STATE,
+      isRecording,
+    ),
 
   // 录屏区域选择
   sendRsSelectAreaOpenWin: () =>
@@ -79,6 +84,15 @@ const electronIpcApi: ElectronIpcApi = {
     electronAPI.ipcRenderer.send(IPC_CHANNELS.SETTINGS.OPEN_WIN),
   sendSettingsClose: () =>
     electronAPI.ipcRenderer.send(IPC_CHANNELS.SETTINGS.CLOSE_WIN),
+
+  // 鼠标点击覆盖层
+  onMouseClick: (callback) =>
+    electronAPI.ipcRenderer.on(
+      IPC_CHANNELS.MOUSE_CLICK_OVERLAY.ON_MOUSE_CLICK,
+      (_, x, y) => {
+        callback(x, y);
+      },
+    ),
 
   // 主题
   sendThemeSet: (theme) =>

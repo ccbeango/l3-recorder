@@ -108,5 +108,7 @@
   "i18n-ally.namespace": true,
   "i18n-ally.theme.annotation": "rgb(230, 219, 116)",
 
-  "cssVariables.lookupFiles": ["packages/styles/src/**/*.css"]
+  "cssVariables.lookupFiles": [
+    "packages/styles/src/**/*.css"
+  ]
 }
