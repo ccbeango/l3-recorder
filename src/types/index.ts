@@ -5,6 +5,7 @@ export type WinName =
   | 'recorderShot'
   | 'recorderSourceClip'
   | 'mouseClickOverlay'
+  | 'keyboardOverlay'
   | 'settings';
 
 export const IPC_CHANNELS = {
@@ -53,6 +54,11 @@ export const IPC_CHANNELS = {
   /** 鼠标点击覆盖层 */
   MOUSE_CLICK_OVERLAY: {
     ON_MOUSE_CLICK: 'mouse-click-overlay:on-mouse-click',
+  },
+
+  /** 键盘按键覆盖层 */
+  KEYBOARD_OVERLAY: {
+    ON_KEY_PRESS: 'keyboard-overlay:on-key-press',
   },
   /** 主题 */
   THEME: {
@@ -122,6 +128,9 @@ export interface ElectronIpcApi {
 
   // 鼠标点击覆盖层相关
   onMouseClick: (callback: (x: number, y: number) => void) => void;
+
+  // 键盘按键覆盖层相关
+  onKeyPress: (callback: (keyName: string) => void) => void;
 
   // 主题相关
   sendThemeSet: (theme: 'light' | 'dark' | 'system') => void;

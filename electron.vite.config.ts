@@ -65,6 +65,10 @@ export default defineConfig({
             __dirname,
             'src/renderer/mouseClickOverlay.html',
           ),
+          keyboardOverlay: resolve(
+            __dirname,
+            'src/renderer/keyboardOverlay.html',
+          ),
           settings: resolve(__dirname, 'src/renderer/settings.html'),
         },
       },

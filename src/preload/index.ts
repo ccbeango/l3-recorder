@@ -94,6 +94,15 @@ const electronIpcApi: ElectronIpcApi = {
       },
     ),
 
+  // 键盘按键覆盖层
+  onKeyPress: (callback) =>
+    electronAPI.ipcRenderer.on(
+      IPC_CHANNELS.KEYBOARD_OVERLAY.ON_KEY_PRESS,
+      (_, keyName) => {
+        callback(keyName);
+      },
+    ),
+
   // 主题
   sendThemeSet: (theme) =>
     electronAPI.ipcRenderer.send(IPC_CHANNELS.THEME.SET, theme),

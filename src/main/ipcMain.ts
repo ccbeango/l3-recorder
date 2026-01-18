@@ -7,7 +7,10 @@ import { BrowserWindow, desktopCapturer, ipcMain, screen } from 'electron';
 import {
   startGlobalMouseListener,
   stopGlobalMouseListener,
+  startGlobalKeyboardListener,
+  stopGlobalKeyboardListener,
 } from './globalMouseListener';
+import KeyboardOverlayWin from './win/keyboardOverlayWin';
 import MainWin from './win/mainWin';
 import MouseClickOverlayWin from './win/mouseClickOverlayWin';
 import RecordFullScreenWin from './win/recorderFullScreenWin';
@@ -25,6 +28,7 @@ interface WinsMap {
   recorderShot: RecorderShotWin | null;
   recorderSourceClip: RecorderSourceClipWin | null;
   mouseClickOverlay: MouseClickOverlayWin | null;
+  keyboardOverlay: KeyboardOverlayWin | null;
   settings: SettingsWin | null;
 }
 
@@ -35,6 +39,7 @@ const winsMap: Omit<WinsMap, 'main'> = {
   recorderShot: null,
   recorderSourceClip: null,
   mouseClickOverlay: null,
+  keyboardOverlay: null,
   settings: null,
 };
 
@@ -77,6 +82,18 @@ export default function initIpcMain() {
   });
 
   ipcMain.on(IPC_CHANNELS.RFS.CLOSE_WIN, () => {
+    // 关闭窗口前先清理监听器
+    if (winsMap.mouseClickOverlay) {
+      stopGlobalMouseListener();
+      winsMap.mouseClickOverlay.close();
+      winsMap.mouseClickOverlay = null;
+    }
+    if (winsMap.keyboardOverlay) {
+      stopGlobalKeyboardListener();
+      winsMap.keyboardOverlay.close();
+      winsMap.keyboardOverlay = null;
+    }
+    
     winsMap.recorderFullScreen?.close();
     winsMap.recorderFullScreen = null;
   });
@@ -125,12 +142,23 @@ export default function initIpcMain() {
           // 全屏录制不需要边界限制，传入 null
           startGlobalMouseListener(winsMap.mouseClickOverlay.win, null);
         }
+        // 创建键盘覆盖层
+        if (!winsMap.keyboardOverlay) {
+          winsMap.keyboardOverlay = new KeyboardOverlayWin();
+          winsMap.keyboardOverlay.show();
+          startGlobalKeyboardListener(winsMap.keyboardOverlay.win);
+        }
       } else {
         // 录制结束时关闭覆盖层并停止监听
         if (winsMap.mouseClickOverlay) {
           stopGlobalMouseListener();
           winsMap.mouseClickOverlay.close();
           winsMap.mouseClickOverlay = null;
+        }
+        if (winsMap.keyboardOverlay) {
+          stopGlobalKeyboardListener();
+          winsMap.keyboardOverlay.close();
+          winsMap.keyboardOverlay = null;
         }
       }
     },
@@ -211,6 +239,7 @@ export default function initIpcMain() {
           const bounds = winsMap.recorderSourceClip?.getAreaBounds();
           startGlobalMouseListener(winsMap.mouseClickOverlay.win, bounds);
         }
+        // 区域录制不需要键盘覆盖层，只保留鼠标点击效果
       } else {
         // 录制结束时关闭覆盖层并停止监听
         if (winsMap.mouseClickOverlay) {
@@ -218,6 +247,7 @@ export default function initIpcMain() {
           winsMap.mouseClickOverlay.close();
           winsMap.mouseClickOverlay = null;
         }
+        // 区域录制不使用键盘覆盖层，无需清理
       }
     },
   );
